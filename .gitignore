@@ -1,0 +1,16 @@
+# Interne Funktionsübersicht
+notenberechner_funktionen.txt
+
+# Alte HTML-Prototypen (durch PHP-Versionen abgelöst)
+_vorlage/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

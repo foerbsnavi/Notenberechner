@@ -1,0 +1,58 @@
+RewriteEngine On
+
+# Saubere URLs für alle Tool-Seiten
+RewriteRule ^notenschluessel$  notenschluessel.php  [L]
+RewriteRule ^punkte-note$      punkte-note.php      [L]
+RewriteRule ^note-punkte$      note-punkte.php      [L]
+RewriteRule ^statistik$        statistik.php        [L]
+RewriteRule ^blocknoten$       blocknoten.php       [L]
+RewriteRule ^beurteilung$      beurteilung.php      [L]
+RewriteRule ^wuerfeln$         wuerfeln.php         [L]
+RewriteRule ^impressum$        impressum.php        [L]
+RewriteRule ^datenschutz$      datenschutz.php      [L]
+
+# Sitemap als PHP, ausgeliefert unter /sitemap.xml
+RewriteRule ^sitemap\.xml$     sitemap.php          [L]
+
+# Verzeichnis-Listing aus
+Options -Indexes
+
+# Funktionsliste und Vorlage-Ordner schützen (lokale Entwicklungs-Artefakte)
+<FilesMatch "_funktionen\.txt$">
+    Require all denied
+</FilesMatch>
+RewriteRule ^_vorlage(/|$) - [F,L]
+RewriteRule ^_inc(/|$)     - [F,L]
+
+# Kompression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript image/svg+xml application/json application/xml
+</IfModule>
+
+# Caching für statische Dateien
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                 "access plus 7 days"
+    ExpiresByType application/javascript   "access plus 7 days"
+    ExpiresByType text/javascript          "access plus 7 days"
+    ExpiresByType application/json         "access plus 7 days"
+    ExpiresByType image/png                "access plus 30 days"
+    ExpiresByType image/jpeg               "access plus 30 days"
+    ExpiresByType image/svg+xml            "access plus 30 days"
+    ExpiresByType image/x-icon             "access plus 30 days"
+    ExpiresByType font/ttf                 "access plus 30 days"
+    ExpiresByType font/woff2               "access plus 30 days"
+</IfModule>
+
+# Sicherheits-Header
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://daten.fabianbrose.de; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"
+    # Lange Cache-Lebenszeit für versionierte Assets (?v=...).
+    <FilesMatch "\.(css|js|svg|woff2|png|jpg)$">
+        Header set Cache-Control "public, max-age=604800, immutable"
+    </FilesMatch>
+</IfModule>

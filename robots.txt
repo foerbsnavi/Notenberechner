@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /impressum
+Disallow: /datenschutz
+
+Sitemap: https://noten.brosemedien.de/sitemap.xml
