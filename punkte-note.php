@@ -1,15 +1,25 @@
 <?php
-$pageTitle = 'Punkte zu Note';
-$pageDescription = 'Aus erreichten Punkten direkt die Note ablesen. Optional mit gespeichertem Notenschlüssel oder eigenen Werten.';
+$pageTitle = 'Punkte in Note umrechnen';
+$breadcrumbName = 'Punkte → Note';
+$pageDescription = 'Punkte in Note umrechnen — kostenlos, ohne Anmeldung. Mit gespeichertem Notenschlüssel oder eigenen Werten, live berechnet, mit PDF-Export.';
 $rootPath = '';
 $schemaType = 'SoftwareApplication';
-$schemaName = 'Punkte zu Note — Notenberechner';
+$schemaName = 'Punkte in Note umrechnen — Notenberechner';
 $jsFiles = ['punkte-note.js'];
 $needsPdf = true;
+$extraSchemas = [
+  ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => [
+    ['@type' => 'Question', 'name' => 'Wie wird die Note aus den Punkten gerundet?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Die Note wird linear aus dem Notenschlüssel ermittelt und dann auf den eingestellten Notenschritt gerundet — wahlweise ganze, halbe, viertel, drittel oder zehntel Noten. So passt die Ausgabe immer zur tatsächlichen Praxis im Zeugnis.']],
+    ['@type' => 'Question', 'name' => 'Kann ich halbe Punkte eingeben?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Halbe Punkte lassen sich pro Klausur ein- oder ausschalten. Die Berechnung berücksichtigt sie konsistent über den gesamten Schlüssel.']],
+    ['@type' => 'Question', 'name' => 'Was passiert, wenn ich keinen Notenschlüssel gespeichert habe?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Du gibst die Eckdaten direkt im Tool an: maximale Punkte, beste und schlechteste Note sowie die Punktegrenzen für die Bestnote und die schlechteste Note. Der Rechner ermittelt damit alle Zwischenwerte selbst.']],
+    ['@type' => 'Question', 'name' => 'Funktioniert die Berechnung live?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Während der Eingabe wird die Note mit kurzer Verzögerung live aktualisiert, damit beim Tippen keine Zwischenergebnisse flackern.']],
+    ['@type' => 'Question', 'name' => 'Werden die Eingaben oder das Ergebnis gespeichert?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Nein. Es wird nichts an einen Server gesendet. Wer die Konfiguration sichern möchte, nutzt „Aktuelle Konfiguration im Browser speichern" — dann landet sie ausschließlich im lokalen Speicher des Browsers.']],
+  ]],
+];
 include '_inc/head.php';
 ?>
 <main id="main" class="layout">
-  <h1>Punkte → Note</h1>
+  <h1>Punkte in Note umrechnen</h1>
   <p class="lead">Aus erreichten Punkten unmittelbar die zugehörige Note ermitteln. Eingaben werden live verarbeitet.</p>
 
   <form id="pn_form" class="card" aria-labelledby="pn_h2" novalidate>
@@ -91,6 +101,94 @@ include '_inc/head.php';
     </div>
     <p class="hint flash-hint" id="pn_flash"></p>
     <ol class="snap-list" id="pn_snap_list" aria-live="polite"></ol>
+  </section>
+
+  <section class="info-block" aria-labelledby="pn_info_h2">
+    <h2 id="pn_info_h2">Punkte in Note umrechnen</h2>
+    <div class="info-grid">
+      <article aria-labelledby="pn_info_a_h">
+        <h3 id="pn_info_a_h">Klausur schnell korrigieren</h3>
+        <p>
+          Beim Korrigieren ist „Punkte → Note" das Werkzeug für die
+          <strong>Einzelumrechnung</strong>: Du gibst die erreichten Punkte
+          ein und siehst sofort die zugehörige Note. Die Berechnung läuft
+          <strong>live mit kurzer Verzögerung</strong>, damit Tipper nicht
+          jedes Zwischenergebnis anzeigen.
+        </p>
+        <p>
+          Halbe Punkte lassen sich pro Aufgabe ein- und ausschalten.
+          Gerundet wird automatisch auf den gewählten Notenschritt — ganz,
+          halb, viertel, drittel oder zehntel.
+        </p>
+      </article>
+      <article aria-labelledby="pn_info_b_h">
+        <h3 id="pn_info_b_h">Mit Notenschlüssel arbeiten</h3>
+        <p>
+          Hast du zuvor unter <a href="notenschluessel">Notenschlüssel</a>
+          einen Standardschlüssel als Browser-Default gespeichert, wird er
+          hier automatisch übernommen. Die Meta-Zeile zeigt, welche
+          <strong>Quelle</strong> aktuell aktiv ist.
+        </p>
+        <p>
+          Wer pro Klausur eigene Werte angeben will, schaltet den
+          Schlüssel-Toggle ab und arbeitet mit eigenen Punkt- und
+          Notengrenzen. Per Permalink lässt sich die Konfiguration teilen,
+          ohne dass die Daten den Browser verlassen.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="faq-block" aria-labelledby="pn_faq_h2">
+    <h2 id="pn_faq_h2">Häufige Fragen zu „Punkte in Note umrechnen"</h2>
+
+    <details class="faq-item">
+      <summary>Wie wird die Note aus den Punkten gerundet?</summary>
+      <div class="faq-answer">
+        <p>Die Note wird linear aus dem <a href="notenschluessel">Notenschlüssel</a>
+        ermittelt und dann auf den eingestellten Notenschritt gerundet —
+        wahlweise <strong>ganze, halbe, viertel, drittel oder zehntel</strong>
+        Noten. So passt die Ausgabe immer zur tatsächlichen Praxis im
+        Zeugnis.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Kann ich halbe Punkte eingeben?</summary>
+      <div class="faq-answer">
+        <p>Ja. Halbe Punkte lassen sich pro Klausur ein- oder ausschalten.
+        Die Berechnung berücksichtigt sie konsistent über den gesamten
+        Schlüssel.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Was passiert, wenn ich keinen Notenschlüssel gespeichert habe?</summary>
+      <div class="faq-answer">
+        <p>Du gibst die Eckdaten direkt im Tool an: maximale Punkte, beste
+        und schlechteste Note sowie die Punktegrenzen. Der Rechner
+        ermittelt damit alle Zwischenwerte selbst.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Funktioniert die Berechnung live?</summary>
+      <div class="faq-answer">
+        <p>Ja. Während der Eingabe wird die Note mit kurzer Verzögerung
+        live aktualisiert, damit beim Tippen keine Zwischenergebnisse
+        flackern.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Werden die Eingaben oder das Ergebnis gespeichert?</summary>
+      <div class="faq-answer">
+        <p>Nein. Es wird nichts an einen Server gesendet. Wer die
+        Konfiguration sichern möchte, nutzt „Aktuelle Konfiguration im
+        Browser speichern" — dann landet sie ausschließlich im lokalen
+        Speicher des Browsers.</p>
+      </div>
+    </details>
   </section>
 </main>
 <?php include '_inc/footer.php'; ?>

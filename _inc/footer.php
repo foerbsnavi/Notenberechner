@@ -4,7 +4,7 @@
     <nav class="footer-nav" aria-label="Rechtliches">
       <a href="<?= $rootPath ?? '' ?>impressum">Impressum</a>
       <a href="<?= $rootPath ?? '' ?>datenschutz">Datenschutz</a>
-      <a href="https://fabianbrose.de/" class="footer-more" rel="author">mehr</a>
+      <a href="https://fabianbrose.de/" class="footer-more" rel="author noopener" aria-label="Weitere Projekte von Fabian Brose">mehr</a>
     </nav>
   </div>
 </footer>

@@ -12,27 +12,36 @@ button { font: inherit; cursor: pointer; }
 [hidden] { display: none !important; }
 
 :root {
-  --bg:           #0b0b0c;
-  --surface:      #161618;
-  --surface-2:    #1d1d20;
-  --surface-3:    #25252a;
-  --border:       #28282d;
-  --border-2:     #3a3a40;
-  --text:         #ededed;
-  --text-muted:   #a4a8b0;
-  --accent:       #5e9bff;
-  --accent-hover: #7eb0ff;
-  --danger:       #ef4444;
-  --danger-bg:    #2a1414;
-  --success:      #4ade80;
-  --radius:       6px;
-  --radius-sm:    4px;
-  --header-h:     64px;
-  --footer-h:     56px;
-  --maxw:         1280px;
-  --gap:          1rem;
-  --pad:          1.25rem;
-  color-scheme:   dark;
+  --bg:            #0e1119;
+  --surface:       #161b27;
+  --surface-2:     #1c2230;
+  --surface-3:     #28304a;
+  --border:        #2a3140;
+  --border-2:      #3b4256;
+  --text:          #f3f4f7;
+  --text-muted:    #b9c0ce;
+  --accent:        #5e9bff;
+  --accent-hover:  #7eb0ff;
+  --accent-subtle: rgba(94, 155, 255, 0.10);
+  --danger:        #ef4444;
+  --danger-bg:     #2a1414;
+  --success:       #4ade80;
+  /* Tool-spezifische Akzentfarben (RGB-Triplet für rgba()-Mix) */
+  --tool-1: 125, 175, 255;  /* Notenschlüssel — Blau (aufgehellt für Kontrast) */
+  --tool-2: 45, 212, 191;   /* Punkte → Note — Teal */
+  --tool-3: 56, 189, 248;   /* Note → Punkte — Cyan */
+  --tool-4: 188, 165, 255;  /* Klausur-Statistik — Lila (aufgehellt für Kontrast) */
+  --tool-5: 251, 113, 133;  /* Blocknoten — Coral */
+  --tool-6: 251, 191, 36;   /* Beurteilung — Amber */
+  --tool-7: 244, 114, 182;  /* Note würfeln — Pink */
+  --radius:        6px;
+  --radius-sm:     4px;
+  --header-h:      64px;
+  --footer-h:      56px;
+  --maxw:          1280px;
+  --gap:           1rem;
+  --pad:           1.25rem;
+  color-scheme:    dark;
 }
 
 html, body {
@@ -102,11 +111,6 @@ a:hover, a:focus-visible { text-decoration: underline; }
 .brand:hover, .brand:focus-visible { text-decoration: none; color: var(--accent); }
 .brand-mark { width: 28px; height: 28px; flex-shrink: 0; color: var(--accent); }
 .brand-text { letter-spacing: -0.01em; }
-.brand-tagline {
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  margin-left: auto;
-}
 
 /* ── Tool-Navigation ── */
 .tool-nav-wrapper {
@@ -133,15 +137,18 @@ a:hover, a:focus-visible { text-decoration: underline; }
   font-size: 0.875rem;
   color: var(--text-muted);
   border-bottom: 2px solid transparent;
+  transition: color 0.12s, background 0.12s, border-color 0.12s;
 }
 .tool-nav-list a:hover,
 .tool-nav-list a:focus-visible {
   color: var(--text);
   text-decoration: none;
+  background: var(--surface-2);
   border-bottom-color: var(--border-2);
 }
 .tool-nav-list a[aria-current="page"] {
   color: var(--accent);
+  background: var(--accent-subtle);
   border-bottom-color: var(--accent);
   font-weight: 500;
 }
@@ -195,13 +202,16 @@ main.layout {
 }
 
 .layout > h1 {
-  font-size: 1.6rem;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.25rem;
+  font-size: 1.875rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
 }
 .layout > .lead {
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  margin-bottom: 1.75rem;
   max-width: 70ch;
 }
 
@@ -228,28 +238,65 @@ main.layout {
   margin-top: 1.25rem;
 }
 .hub-card {
+  --tool: var(--tool-1);
   display: block;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  position: relative;
+  background:
+    linear-gradient(135deg, rgba(var(--tool), 0.14), rgba(var(--tool), 0.04) 60%),
+    var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-left: 4px solid rgb(var(--tool));
   border-radius: var(--radius);
-  padding: 1rem 1.125rem;
+  padding: 1rem 1.125rem 1rem 1.125rem;
   color: var(--text);
-  transition: border-color 0.12s, transform 0.12s;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, background 0.15s;
+}
+.hub-card::after {
+  content: "›" / "";
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: rgb(var(--tool));
+  opacity: 0.7;
+  transition: opacity 0.15s, transform 0.15s;
+  speak: none;
 }
 .hub-card:hover, .hub-card:focus-visible {
   text-decoration: none;
-  border-color: var(--accent);
-  transform: translateY(-1px);
+  background:
+    linear-gradient(135deg, rgba(var(--tool), 0.22), rgba(var(--tool), 0.07) 60%),
+    var(--surface-2);
+  border-color: rgb(var(--tool));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
 }
+.hub-card:hover::after, .hub-card:focus-visible::after {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Pro Kachel-Position eine eigene Akzentfarbe (Fallback in .hub-card ist tool-1) */
+.hub-card:nth-child(2) { --tool: var(--tool-2); }
+.hub-card:nth-child(3) { --tool: var(--tool-3); }
+.hub-card:nth-child(4) { --tool: var(--tool-4); }
+.hub-card:nth-child(5) { --tool: var(--tool-5); }
+.hub-card:nth-child(6) { --tool: var(--tool-6); }
+.hub-card:nth-child(7) { --tool: var(--tool-7); }
+
 .hub-card h2 {
   font-size: 1rem;
-  margin-bottom: 0.25rem;
-  color: var(--text);
+  margin-bottom: 0.35rem;
+  color: rgb(var(--tool));
+  padding-right: 1.25rem;
+  letter-spacing: -0.005em;
 }
 .hub-card p {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   margin: 0;
+  line-height: 1.5;
 }
 .hub-disclaimer {
   margin-top: 2rem;
@@ -278,39 +325,99 @@ main.layout {
   letter-spacing: -0.01em;
 }
 
-/* Panel mit Summary-Toggle */
-details.panel {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 0.75rem;
-  overflow: hidden;
+/* ── Info-Block (Erklärtext unter den Tool-Kacheln) ── */
+.info-block {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
 }
-details.panel > summary {
-  padding: 0.625rem 0.875rem;
+.info-block > h2 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.25rem;
+  color: var(--text);
+}
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2.5rem;
+  row-gap: 1.75rem;
+}
+.info-grid > article {
+  min-width: 0;
+}
+.info-grid h3 {
+  font-size: 1.05rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.info-grid p {
+  color: var(--text-muted);
+  margin-bottom: 0.625rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.info-grid p:last-child { margin-bottom: 0; }
+.info-grid strong { color: var(--text); font-weight: 600; }
+.info-grid a { color: var(--accent); }
+.info-grid a:hover, .info-grid a:focus-visible { color: var(--accent-hover); }
+
+/* ── FAQ-Block (klare Liste, kein Card-Look) ── */
+.faq-block {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.faq-block > h2 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.875rem;
+  color: var(--text);
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item > summary {
+  padding: 0.75rem 1.75rem 0.75rem 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
   cursor: pointer;
   user-select: none;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  position: relative;
 }
-details.panel > summary::-webkit-details-marker { display: none; }
-details.panel > summary::after {
+/* Native list-marker bewusst nur per pseudo-Hide entfernen,
+   um Safari/VoiceOver-Ankündigung "ausklappbar" zu erhalten. */
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::marker { content: ""; }
+.faq-item > summary::after {
   content: "+";
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
   color: var(--text-muted);
   font-weight: 400;
-  font-size: 1.25rem;
   line-height: 1;
 }
-details.panel[open] > summary::after { content: "−"; }
-details.panel > .panel-body {
-  padding: 0.875rem;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
+.faq-item[open] > summary::after { content: "−"; }
+.faq-answer {
+  padding: 0 0 0.875rem 0;
 }
+.faq-answer p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  max-width: 72ch;
+}
+.faq-answer a { color: var(--accent); }
+.faq-answer a:hover, .faq-answer a:focus-visible { color: var(--accent-hover); }
 
 /* ── Grid für Tool-Eingaben ── */
 .grid {
@@ -723,9 +830,15 @@ table.table--compact td.col-filler {
 /* ── Responsive ── */
 @media (max-width: 900px) {
   .header-inner { padding: 0.75rem 1rem; }
-  .brand-tagline { display: none; }
   main.layout { padding: 1rem; }
   .footer-inner { padding: 0.75rem 1rem; }
+  .info-grid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .faq-block { margin-top: 2rem; }
 }
 
 /* Burger-Menü unterhalb 760px: Liste ausgeblendet, Toggle sichtbar */
@@ -755,8 +868,7 @@ table.table--compact td.col-filler {
 
 /* ── Druck ── */
 @media print {
-  .site-header, .tool-nav, .site-footer, .actions, .snap-list,
-  details.panel:not([open]) > summary::after { display: none; }
+  .site-header, .tool-nav, .site-footer, .actions, .snap-list { display: none; }
   body, main.layout, .card, .result, .hub-card, .block-card {
     background: #fff;
     color: #000;
@@ -765,5 +877,15 @@ table.table--compact td.col-filler {
   }
   .hub-grid, .blocks { display: block; }
   .hub-card, .block-card { margin-bottom: 0.5rem; padding: 0.5rem 0; }
+  .hub-card::after { content: ""; }
+  .hub-card h2 { color: #000; }
   table.table th { background: #f0f0f0; color: #000; }
+  /* Erklärtext & FAQ im Druck immer vollständig zeigen */
+  .info-grid { grid-template-columns: 1fr; }
+  .info-grid h3, .info-grid p,
+  .faq-block h2, .faq-item > summary, .faq-answer p { color: #000; }
+  .faq-item { border-bottom: 1px solid #999; }
+  .faq-item > summary::after { display: none; }
+  .faq-answer { display: block !important; }
+  .faq-item:not([open]) > .faq-answer { display: block !important; }
 }

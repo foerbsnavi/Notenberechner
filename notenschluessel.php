@@ -1,11 +1,21 @@
 <?php
-$pageTitle = 'Notenschlüssel';
-$pageDescription = 'Linearen Notenschlüssel erstellen: Punkte zu Noten in beliebiger Skala. Mit halben Punkten, frei wählbarem Notenschritt, CSV- und PDF-Export.';
+$pageTitle = 'Notenschlüssel online erstellen';
+$breadcrumbName = 'Notenschlüssel';
+$pageDescription = 'Notenschlüssel kostenlos online erstellen: Punkte-zu-Noten-Schlüssel in beliebiger Skala, mit halben Punkten, frei wählbarem Notenschritt, CSV & PDF.';
 $rootPath = '';
 $schemaType = 'SoftwareApplication';
 $schemaName = 'Notenschlüssel — Notenberechner';
 $jsFiles = ['notenschluessel.js'];
 $needsPdf = true;
+$extraSchemas = [
+  ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => [
+    ['@type' => 'Question', 'name' => 'Was ist ein Notenschlüssel?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ein Notenschlüssel ordnet jeder erreichbaren Punktzahl einer Klausur eine Note zu. Der Notenberechner erzeugt ihn linear in beliebiger Skala (1–6, 0–15, Punkte- oder Notensystem), mit halben Punkten und frei wählbarem Notenschritt.']],
+    ['@type' => 'Question', 'name' => 'Kann ich Bonuspunkte oder einen Punkte-Puffer einbauen?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. „Beste Note vergeben ab Punkten" muss nicht der Maximalpunktzahl entsprechen — wer einen Puffer einrechnen möchte, setzt diesen Wert niedriger. So gibt es die Bestnote auch unterhalb der vollen Punktzahl.']],
+    ['@type' => 'Question', 'name' => 'Welche Notenschritte unterstützt der Rechner?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Zehntel-, Viertel-, Drittel-, halbe und ganze Noten — abgestimmt auf Sekundarstufe I/II, Oberstufe und Hochschule.']],
+    ['@type' => 'Question', 'name' => 'Übernimmt der Notenschlüssel sich automatisch in andere Werkzeuge?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Wer den aktuellen Schlüssel als Standard im Browser merkt, kann ihn in „Punkte → Note", „Note → Punkte", „Klausur-Statistik" und „Blocknoten" per Toggle übernehmen. Die Daten bleiben dabei lokal im Browser.']],
+    ['@type' => 'Question', 'name' => 'Kann ich den Notenschlüssel als PDF oder CSV exportieren?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Der Schlüssel lässt sich als druckbare PDF und als CSV für Excel oder andere Tabellenkalkulationen herunterladen.']],
+  ]],
+];
 include '_inc/head.php';
 ?>
 <main id="main" class="layout">
@@ -96,6 +106,97 @@ include '_inc/head.php';
     </div>
     <p class="hint flash-hint" id="ns_flash"></p>
     <ol class="snap-list" id="ns_snap_list" aria-live="polite"></ol>
+  </section>
+
+  <section class="info-block" aria-labelledby="ns_info_h2">
+    <h2 id="ns_info_h2">Notenschlüssel — was steckt dahinter?</h2>
+    <div class="info-grid">
+      <article aria-labelledby="ns_info_a_h">
+        <h3 id="ns_info_a_h">Wofür ein Notenschlüssel?</h3>
+        <p>
+          Ein <strong>Notenschlüssel</strong> ordnet jeder erreichbaren
+          Punktzahl einer Klausur die passende Note zu. Sobald die Skala
+          steht, lässt sich jede einzelne Arbeit ohne Nachdenken bewerten —
+          und die Verteilung bleibt über die Klasse hinweg konsistent.
+        </p>
+        <p>
+          Der hier erzeugte Schlüssel ist <strong>linear</strong>: zwischen
+          „beste Note ab X Punkten" und „schlechteste Note ab Y Punkten"
+          werden die Noten gleichmäßig verteilt. Das deckt den klassischen
+          Schulfall ab und ist transparent gegenüber Schülerinnen, Schülern
+          und Eltern.
+        </p>
+      </article>
+      <article aria-labelledby="ns_info_b_h">
+        <h3 id="ns_info_b_h">Tipps für die passende Skala</h3>
+        <p>
+          Für die <strong>Sekundarstufe I</strong> reichen meist ganze oder
+          halbe Noten. Die <strong>Oberstufe</strong> arbeitet üblicherweise
+          mit Zehntel- oder Drittelnoten, das <strong>Punktesystem</strong>
+          (0–15) lässt sich über „beste Note 15, schlechteste Note 0"
+          abbilden.
+        </p>
+        <p>
+          „Beste Note vergeben ab Punkten" muss nicht zwangsläufig der
+          Maximalpunktzahl entsprechen — wer Bonuspunkte oder einen
+          „kostenlosen Puffer" einrechnen will, setzt diesen Wert niedriger
+          und vergibt die Bestnote dann etwas großzügiger.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="faq-block" aria-labelledby="ns_faq_h2">
+    <h2 id="ns_faq_h2">Häufige Fragen zum Notenschlüssel</h2>
+
+    <details class="faq-item">
+      <summary>Was ist ein Notenschlüssel?</summary>
+      <div class="faq-answer">
+        <p>Ein Notenschlüssel ordnet jeder erreichbaren Punktzahl einer
+        Klausur eine Note zu. Der Notenberechner erzeugt ihn
+        <strong>linear in beliebiger Skala</strong> (1–6, 0–15,
+        Punkte- oder Notensystem), mit halben Punkten und frei wählbarem
+        Notenschritt.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Kann ich Bonuspunkte oder einen Punkte-Puffer einbauen?</summary>
+      <div class="faq-answer">
+        <p>Ja. „Beste Note vergeben ab Punkten" muss nicht der
+        Maximalpunktzahl entsprechen — wer einen Puffer einrechnen möchte,
+        setzt diesen Wert niedriger. So gibt es die Bestnote auch
+        unterhalb der vollen Punktzahl.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Welche Notenschritte unterstützt der Rechner?</summary>
+      <div class="faq-answer">
+        <p>Zehntel-, Viertel-, Drittel-, halbe und ganze Noten —
+        abgestimmt auf Sekundarstufe I/II, Oberstufe und Hochschule.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Übernimmt der Notenschlüssel sich automatisch in andere Werkzeuge?</summary>
+      <div class="faq-answer">
+        <p>Wer den aktuellen Schlüssel als Standard im Browser merkt, kann
+        ihn in <a href="punkte-note">„Punkte → Note"</a>,
+        <a href="note-punkte">„Note → Punkte"</a>,
+        <a href="statistik">„Klausur-Statistik"</a> und
+        <a href="blocknoten">„Blocknoten"</a> per Toggle übernehmen. Die
+        Daten bleiben dabei lokal im Browser.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Kann ich den Notenschlüssel als PDF oder CSV exportieren?</summary>
+      <div class="faq-answer">
+        <p>Ja. Der Schlüssel lässt sich als druckbares PDF und als CSV für
+        Excel oder andere Tabellenkalkulationen herunterladen.</p>
+      </div>
+    </details>
   </section>
 </main>
 <?php include '_inc/footer.php'; ?>

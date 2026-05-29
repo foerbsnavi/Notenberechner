@@ -1,15 +1,25 @@
 <?php
-$pageTitle = 'Beurteilung';
-$pageDescription = 'Beurteilungstexte für Schüler generieren — Schülername, Fach, Note und Textlänge wählen, Text bekommen. Editierbar, mit Kopier- und PDF-Funktion.';
+$pageTitle = 'Schüler-Beurteilung schreiben';
+$breadcrumbName = 'Beurteilung';
+$pageDescription = 'Schüler-Beurteilungen für Zeugnis oder Bericht formulieren: Name, Fach, Note, Textlänge wählen — fertigen Text editieren, kopieren oder als PDF speichern.';
 $rootPath = '';
 $schemaType = 'WebApplication';
-$schemaName = 'Beurteilungsgenerator — Notenberechner';
+$schemaName = 'Schüler-Beurteilung schreiben — Notenberechner';
 $jsFiles = ['beurteilung.js'];
 $needsPdf = true;
+$extraSchemas = [
+  ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => [
+    ['@type' => 'Question', 'name' => 'Werden Schülernamen gespeichert?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Nein. Der eingegebene Name bleibt nur in der aktuellen Sitzung sichtbar — er wird weder in den Browser-Speicher noch in eine URL geschrieben. Sobald die Seite geschlossen wird, ist er weg.']],
+    ['@type' => 'Question', 'name' => 'Wie passt der Generator die Tonalität an die Note an?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Pro Note gibt es einen eigenen Textbaustein-Pool mit passender Formulierung — eine 1 klingt anders als eine 4. Zusätzlich sorgt ein Wiederholungs-Schutz dafür, dass Starter und Satzbausteine nicht direkt aufeinander folgen.']],
+    ['@type' => 'Question', 'name' => 'Kann ich die generierten Texte bearbeiten?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Der Text liegt nach der Generierung in einem editierbaren Textfeld — du kannst Sätze umstellen, Formulierungen schärfen oder weicher machen, eigene Beobachtungen ergänzen.']],
+    ['@type' => 'Question', 'name' => 'Welche Fächer und Textlängen sind möglich?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Standardmäßig Mathe, Deutsch, Englisch, Kunst, Musik, Sport, Biologie und Geschichte. Drei Textlängen: kurz (2–4 Sätze), mittel (4–6) und lang (5–8).']],
+    ['@type' => 'Question', 'name' => 'Kann ich den Text kopieren oder als PDF speichern?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beides ist möglich. Der Kopieren-Knopf legt den Text in die Zwischenablage, der PDF-Knopf erzeugt ein druckbares Schreiben — etwa für Zeugnis-Anhang oder Lernentwicklungsbericht.']],
+  ]],
+];
 include '_inc/head.php';
 ?>
 <main id="main" class="layout">
-  <h1>Beurteilungsgenerator</h1>
+  <h1>Schüler-Beurteilung schreiben</h1>
   <p class="lead">Textbausteine für Schüler-Beurteilungen — generieren, anpassen, kopieren oder als PDF exportieren.</p>
 
   <form id="bg_form" class="card" aria-labelledby="bg_h2" novalidate>
@@ -76,6 +86,94 @@ include '_inc/head.php';
       <button type="button" class="btn" id="bg_copy" disabled aria-disabled="true">Kopieren</button>
       <button type="button" class="btn" id="bg_pdf" disabled aria-disabled="true">PDF herunterladen</button>
     </div>
+  </section>
+
+  <section class="info-block" aria-labelledby="bg_info_h2">
+    <h2 id="bg_info_h2">Beurteilungstexte für Schülerinnen und Schüler</h2>
+    <div class="info-grid">
+      <article aria-labelledby="bg_info_a_h">
+        <h3 id="bg_info_a_h">Wofür sind Beurteilungstexte gut?</h3>
+        <p>
+          Beurteilungen werden in <strong>Zeugnissen</strong>, in
+          <strong>Lernentwicklungsberichten</strong> und in
+          <strong>Übergabeprotokollen</strong> gebraucht — überall dort, wo
+          eine reine Zahl nicht reicht und Verhalten oder Leistung in Worte
+          gefasst werden müssen.
+        </p>
+        <p>
+          Der Generator liefert je nach Note und Fach passende
+          <strong>Textbausteine</strong> in drei Längen. Das ist kein
+          Ersatz für eine individuelle Einschätzung, sondern ein
+          Startpunkt: Den Text danach noch anpassen, ergänzen und auf das
+          konkrete Kind zuschneiden.
+        </p>
+      </article>
+      <article aria-labelledby="bg_info_b_h">
+        <h3 id="bg_info_b_h">Bausteine anpassen und kombinieren</h3>
+        <p>
+          Schülername, Fach, Note und Textlänge geben den Rahmen vor — der
+          Generator achtet darauf, dass die <strong>Tonalität zur Note
+          passt</strong> und Satz-Anfänge nicht direkt hintereinander
+          wiederholt werden. Das Ergebnis ist nicht perfekt, aber lesbar.
+        </p>
+        <p>
+          Im Anschluss steht der Text in einem editierbaren Feld — du kannst
+          Sätze umstellen, Formulierungen verschärfen oder weicher machen,
+          Beobachtungen ergänzen. Per Knopfdruck in die Zwischenablage oder
+          als <strong>druckbares PDF</strong>.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="faq-block" aria-labelledby="bg_faq_h2">
+    <h2 id="bg_faq_h2">Häufige Fragen zur Schüler-Beurteilung</h2>
+
+    <details class="faq-item">
+      <summary>Werden Schülernamen gespeichert?</summary>
+      <div class="faq-answer">
+        <p>Nein. Der eingegebene Name bleibt nur in der aktuellen Sitzung
+        sichtbar — er wird weder in den Browser-Speicher noch in eine URL
+        geschrieben. Sobald die Seite geschlossen wird, ist er weg.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Wie passt der Generator die Tonalität an die Note an?</summary>
+      <div class="faq-answer">
+        <p>Pro Note gibt es einen eigenen Textbaustein-Pool mit passender
+        Formulierung — eine 1 klingt anders als eine 4. Zusätzlich sorgt
+        ein <strong>Wiederholungs-Schutz</strong> dafür, dass Starter und
+        Satzbausteine nicht direkt aufeinander folgen.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Kann ich die generierten Texte bearbeiten?</summary>
+      <div class="faq-answer">
+        <p>Ja. Der Text liegt nach der Generierung in einem editierbaren
+        Textfeld — du kannst Sätze umstellen, Formulierungen schärfen oder
+        weicher machen, eigene Beobachtungen ergänzen.</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Welche Fächer und Textlängen sind möglich?</summary>
+      <div class="faq-answer">
+        <p>Standardmäßig Mathe, Deutsch, Englisch, Kunst, Musik, Sport,
+        Biologie und Geschichte. Drei Textlängen: kurz (2–4 Sätze),
+        mittel (4–6) und lang (5–8).</p>
+      </div>
+    </details>
+
+    <details class="faq-item">
+      <summary>Kann ich den Text kopieren oder als PDF speichern?</summary>
+      <div class="faq-answer">
+        <p>Beides ist möglich. Der Kopieren-Knopf legt den Text in die
+        Zwischenablage, der PDF-Knopf erzeugt ein druckbares Schreiben —
+        etwa für Zeugnis-Anhang oder Lernentwicklungsbericht.</p>
+      </div>
+    </details>
   </section>
 </main>
 <?php include '_inc/footer.php'; ?>

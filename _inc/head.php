@@ -1,13 +1,17 @@
 <?php
 // Erwartet: $pageTitle (Tool-Name oder null für Hub),
+//           optional $pageTitleFull (vollständiger Title-Override),
 //           optional $pageDescription, $rootPath, $noindex, $schemaType,
-//           $schemaName, $jsFiles (Array)
+//           $schemaName, $jsFiles (Array), $extraSchemas (Array von JSON-LD-Objekten)
 $brand           = 'Notenberechner';
 $siteHost        = 'noten.brosemedien.de';
 $pageTitleRaw    = $pageTitle ?? null;
-$pageTitle       = $pageTitleRaw
-    ? $pageTitleRaw . ' — ' . $brand . ' | ' . $siteHost
-    : $brand . ' | ' . $siteHost;
+$pageTitleFull   = $pageTitleFull ?? null;
+$pageTitle       = $pageTitleFull
+    ? $pageTitleFull
+    : ($pageTitleRaw
+        ? $pageTitleRaw . ' | ' . $brand
+        : $brand . ' | ' . $siteHost);
 $pageDescription = $pageDescription ?? 'Notenberechner für Lehrkräfte: Notenschlüssel, Punkte zu Note, Klausur-Statistik, Blocknoten, Beurteilungen und mehr. Im Browser, ohne Anmeldung, ohne Datenspeicherung.';
 $rootPath        = $rootPath ?? '';
 $noindex         = $noindex   ?? false;
@@ -21,7 +25,8 @@ $scheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https
 $path      = strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
 $canonical = $scheme . '://' . $host . '/' . ltrim((string)$path, '/');
 $canonical = preg_replace('#(?<!:)/+#', '/', $canonical); // Doppel-Slashes vermeiden
-$ogImage   = $scheme . '://' . $host . '/og-image.svg';
+$ogImageMt = @filemtime(__DIR__ . '/../og-image.png') ?: time();
+$ogImage   = $scheme . '://' . $host . '/og-image.png?v=' . $ogImageMt;
 
 $cssMtime = @filemtime(__DIR__ . '/../styles/style.css') ?: time();
 ?><!DOCTYPE html>
@@ -39,6 +44,9 @@ $cssMtime = @filemtime(__DIR__ . '/../styles/style.css') ?: time();
   <meta property="og:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
   <meta property="og:url" content="<?= htmlspecialchars($canonical, ENT_QUOTES, 'UTF-8') ?>">
   <meta property="og:image" content="<?= htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') ?>">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" href="<?= $rootPath ?>favicon.svg" type="image/svg+xml">
@@ -63,23 +71,48 @@ $cssMtime = @filemtime(__DIR__ . '/../styles/style.css') ?: time();
       $schema['operatingSystem']     = 'Web';
       $schema['offers']              = ['@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'EUR'];
     }
-    echo json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    echo json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP);
   ?>
   </script>
+<?php
+    // BreadcrumbList nur für Tool-/Unterseiten (Hub bekommt keinen Breadcrumb).
+    $breadcrumbName = $breadcrumbName ?? ($pageTitleRaw ?: null);
+    if ($breadcrumbName) {
+        $breadcrumb = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => $brand, 'item' => $scheme . '://' . $host . '/'],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => $breadcrumbName, 'item' => $canonical],
+            ],
+        ];
+        echo "  <script type=\"application/ld+json\">\n  ";
+        echo json_encode($breadcrumb, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP);
+        echo "\n  </script>\n";
+    }
+
+    if (!empty($extraSchemas) && is_array($extraSchemas)) {
+        foreach ($extraSchemas as $extra) {
+            if (!is_array($extra)) { continue; }
+            echo "  <script type=\"application/ld+json\">\n  ";
+            echo json_encode($extra, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP);
+            echo "\n  </script>\n";
+        }
+    }
+?>
 <?php endif; ?>
 </head>
 <body>
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
 <header class="site-header">
   <div class="header-inner">
-    <a href="<?= $rootPath ?>" class="brand" aria-label="Notenberechner — Startseite">
+    <a href="/" class="brand" aria-label="Notenberechner — Startseite">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
         <rect x="2" y="2" width="28" height="28" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
         <text x="16" y="22" text-anchor="middle" font-family="-apple-system,Segoe UI,Roboto,Arial,sans-serif" font-size="18" font-weight="700" fill="currentColor">N</text>
       </svg>
       <span class="brand-text">Notenberechner</span>
     </a>
-    <p class="brand-tagline">Werkzeugkasten für Lehrkräfte — schnell, klar, ohne Anmeldung.</p>
   </div>
 </header>
 <?php
