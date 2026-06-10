@@ -74,14 +74,11 @@
     if (!listEl || !emptyEl) return;
     listEl.innerHTML = "";
 
+    // Die Liste selbst bleibt immer im DOM (aria-live-Region!) — leer wird
+    // sie per CSS ausgeblendet (.snap-list:empty), wie auf den Tool-Seiten.
     const items = listAll();
-    if (items.length === 0) {
-      emptyEl.hidden = false;
-      listEl.hidden  = true;
-      return;
-    }
-    emptyEl.hidden = true;
-    listEl.hidden  = false;
+    emptyEl.hidden = items.length > 0;
+    if (items.length === 0) return;
 
     for (const s of items) {
       const li = document.createElement("li");

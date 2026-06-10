@@ -11,8 +11,8 @@ $extraSchemas = [
   ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => [
     ['@type' => 'Question', 'name' => 'Welche Trennzeichen kann ich für die Eingabe verwenden?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Komma, Leerzeichen und Zeilenumbruch sind erlaubt — gemischt geht auch. Als Dezimaltrennzeichen funktionieren sowohl Komma als auch Punkt.']],
     ['@type' => 'Question', 'name' => 'Kann ich auch Noten statt Punkte eingeben?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Über den Modus-Schalter wählst du, ob die eingegebenen Werte als Noten oder als Punkte interpretiert werden. Bei Punkten kannst du die Maximalpunktzahl angeben oder den gespeicherten Notenschlüssel übernehmen.']],
-    ['@type' => 'Question', 'name' => 'Was bedeutet die Standardabweichung?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Die Standardabweichung misst, wie stark die einzelnen Ergebnisse vom Mittelwert abweichen. Ein kleiner Wert deutet auf eine homogene Klasse hin, ein großer Wert auf breit gestreute Leistungen.']],
-    ['@type' => 'Question', 'name' => 'Was ist die Bestehensquote?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Der Anteil aller Arbeiten mit Note 4 oder besser — also bestanden. Sie wird automatisch berechnet, wenn die Eingabe in Punkten erfolgt und ein Notenschlüssel anliegt.']],
+    ['@type' => 'Question', 'name' => 'Was bedeutet die Standardabweichung?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Die Standardabweichung misst, wie stark die einzelnen Ergebnisse vom Mittelwert abweichen. Ein kleiner Wert deutet auf eine homogene Klasse hin, ein großer Wert auf breit gestreute Leistungen. Berechnet wird die Stichproben-Standardabweichung (Division durch n − 1).']],
+    ['@type' => 'Question', 'name' => 'Was ist die Bestehensquote?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Der Anteil aller Arbeiten, die die eingestellte Schwelle „Bestanden bis Note" (Standard: 4) erreichen. Gezählt wird die auf den gewählten Notenschritt gerundete Note — genau wie in der Verteilungstabelle. Die Quote funktioniert sowohl bei Noten- als auch bei Punkte-Eingabe.']],
     ['@type' => 'Question', 'name' => 'Wie wird die Notenverteilung gerundet?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Die Verteilung wird auf den eingestellten Notenschritt (ganz, halb, viertel, drittel, zehntel) gerundet. So entspricht sie dem Format, das im Zeugnis tatsächlich vergeben wird.']],
   ]],
 ];
@@ -152,8 +152,10 @@ include '_inc/head.php';
       <article aria-labelledby="ks_info_b_h">
         <h3 id="ks_info_b_h">Bestehensquote und Notenverteilung</h3>
         <p>
-          Bei Eingabe in Punkten lässt sich automatisch die
-          <strong>Bestehensquote</strong> berechnen (Anteil mit Note ≤ 4).
+          Die <strong>Bestehensquote</strong> zeigt den Anteil der
+          Arbeiten, die die eingestellte Schwelle „Bestanden bis Note"
+          erreichen (Standard: Note 4) — gezählt mit der auf den
+          Notenschritt gerundeten Note, passend zur Verteilungstabelle.
           Sie ist ein schneller Indikator dafür, ob eine Klausur
           angemessen schwer war oder ob der
           <a href="notenschluessel">Notenschlüssel</a> nachjustiert werden
@@ -197,16 +199,19 @@ include '_inc/head.php';
         <p>Die Standardabweichung misst, wie stark die einzelnen Ergebnisse
         vom Mittelwert abweichen. Ein <strong>kleiner Wert</strong> deutet
         auf eine homogene Klasse hin, ein <strong>großer Wert</strong> auf
-        breit gestreute Leistungen.</p>
+        breit gestreute Leistungen. Berechnet wird die
+        Stichproben-Standardabweichung (Division durch n&nbsp;−&nbsp;1).</p>
       </div>
     </details>
 
     <details class="faq-item">
       <summary>Was ist die Bestehensquote?</summary>
       <div class="faq-answer">
-        <p>Der Anteil aller Arbeiten mit Note 4 oder besser — also
-        bestanden. Sie wird automatisch berechnet, wenn die Eingabe in
-        Punkten erfolgt und ein Notenschlüssel anliegt.</p>
+        <p>Der Anteil aller Arbeiten, die die eingestellte Schwelle
+        „Bestanden bis Note" (Standard: 4) erreichen. Gezählt wird die auf
+        den gewählten Notenschritt gerundete Note — genau wie in der
+        Verteilungstabelle. Die Quote funktioniert sowohl bei Noten- als
+        auch bei Punkte-Eingabe.</p>
       </div>
     </details>
 

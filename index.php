@@ -141,7 +141,7 @@ include '_inc/head.php';
     <p class="hint">Konfigurationen, die du in den einzelnen Werkzeugen über
        „Aktuelle Konfiguration im Browser speichern" abgelegt hast. Klick auf
        „laden" öffnet das passende Werkzeug mit den hinterlegten Werten.</p>
-    <ol class="snap-list" id="hub_snap_list" aria-live="polite" hidden></ol>
+    <ol class="snap-list" id="hub_snap_list" aria-live="polite"></ol>
     <p class="hint" id="hub_snap_empty" hidden>Noch keine Konfigurationen gespeichert.</p>
   </section>
 

@@ -196,12 +196,17 @@
     const bestInData  = higherIsBetter ? stats.max : stats.min;
     const worstInData = higherIsBetter ? stats.min : stats.max;
 
-    // Bestehensquote
+    // Bestehensquote — gezählt wird die auf den Notenschritt gerundete Note,
+    // damit das Ergebnis zur Verteilungstabelle passt (eine 4,4 erscheint dort
+    // bei ganzen Noten als 4 und gilt dann auch hier als bestanden).
+    const loG = Math.min(bestG, worstG);
+    const hiG = Math.max(bestG, worstG);
     let passed = 0;
     if (C.isFiniteNum(passThr)) {
       for (const g of grades) {
-        if (higherIsBetter) { if (g >= passThr - 1e-9) passed++; }
-        else                { if (g <= passThr + 1e-9) passed++; }
+        const r = C.clampMinMax(C.roundToStep(g, stepG), loG, hiG);
+        if (higherIsBetter) { if (r >= passThr - 1e-9) passed++; }
+        else                { if (r <= passThr + 1e-9) passed++; }
       }
     }
     const passRate = grades.length ? (passed / grades.length) : 0;
@@ -209,13 +214,18 @@
     // Summary-Tabelle
     const sb = $("ks_summary_body");
     const fmtG = (x) => C.fmtGrade(x, stepG);
+    // Kennzahlen aus Rohwerten (Durchschnitt, Median, Beste/Schlechteste) immer
+    // mit mindestens einer Nachkommastelle anzeigen — bei Schritt "ganze Noten"
+    // würde der Klassenschnitt sonst ohne Dezimalstelle erscheinen (2 statt 2,4).
+    const statDecimals = Math.max(1, C.decimalsForStep(stepG));
+    const fmtStat = (x) => Number(x).toFixed(statDecimals).replace(".", ",");
     const rowsSummary = [
       ["Anzahl Werte", String(stats.n)],
-      ["Durchschnitt (Note)", fmtG(stats.mean)],
-      ["Median", fmtG(stats.median)],
+      ["Durchschnitt (Note)", fmtStat(stats.mean)],
+      ["Median", fmtStat(stats.median)],
       ["Modus (häufigster Wert)", Number.isFinite(modeFromDist) ? fmtG(modeFromDist) : "–"],
-      ["Beste Note (im Datensatz)", fmtG(bestInData)],
-      ["Schlechteste Note (im Datensatz)", fmtG(worstInData)],
+      ["Beste Note (im Datensatz)", fmtStat(bestInData)],
+      ["Schlechteste Note (im Datensatz)", fmtStat(worstInData)],
       ["Spannweite", C.fmt(stats.range, 0.1)],
       ["Standardabweichung", C.fmt(stats.stdev, 0.1)],
       ["Bestanden (" + (higherIsBetter ? "≥ " : "≤ ") + C.fmt(passThr, 0.1) + ")", passed + " von " + grades.length + " (" + (passRate * 100).toFixed(1).replace(".", ",") + " %)"]

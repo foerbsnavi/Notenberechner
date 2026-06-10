@@ -1,5 +1,16 @@
 RewriteEngine On
 
+# Direkte .php-Aufrufe dauerhaft auf die sauberen URLs umleiten
+# (verhindert Duplicate Content; Query-Strings bleiben erhalten).
+# THE_REQUEST matcht nur die Original-Anfrage, nicht die internen
+# Rewrites weiter unten — dadurch entsteht keine Redirect-Schleife.
+RewriteCond %{THE_REQUEST} \s/+index\.php[?\s]
+RewriteRule ^index\.php$ / [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+sitemap\.php[?\s]
+RewriteRule ^sitemap\.php$ /sitemap.xml [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+(notenschluessel|punkte-note|note-punkte|statistik|blocknoten|beurteilung|wuerfeln|impressum|datenschutz)\.php[?\s]
+RewriteRule ^ /%1 [R=301,L]
+
 # Saubere URLs für alle Tool-Seiten
 RewriteRule ^notenschluessel$  notenschluessel.php  [L]
 RewriteRule ^punkte-note$      punkte-note.php      [L]
@@ -48,6 +59,7 @@ RewriteRule ^_inc(/|$)     - [F,L]
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
     Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://daten.fabianbrose.de; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'"

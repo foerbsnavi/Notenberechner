@@ -115,6 +115,12 @@
     renderBlocks();
     if (lastResult) calc();
     urlUpdate();
+    // renderBlocks() baut das DOM neu auf — der Fokus läge sonst im Leeren.
+    // Ziel: Entfernen-Button des nachrückenden Blocks, sonst "+ Block hinzufügen"
+    // (Block 1 hat keinen Entfernen-Button).
+    const followId = blockIds[Math.min(Math.max(idx, 0), blockIds.length - 1)];
+    const target = document.querySelector("#bn_block_" + followId + " .block-remove") || $("bn_add_block");
+    if (target) target.focus();
   }
 
   // ── Auswertung ──────────────────────────────────────────────

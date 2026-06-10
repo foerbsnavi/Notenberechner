@@ -11,9 +11,9 @@ $extraSchemas = [
   ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => [
     ['@type' => 'Question', 'name' => 'Was ist der Unterschied zwischen prozentualer und anteiliger Gewichtung?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Bei prozentualer Gewichtung muss die Summe aller Blöcke 100 % ergeben — sonst gibt es eine Warnung. Bei anteiliger Gewichtung sind beliebige positive Werte erlaubt, die intern normalisiert werden. Mathematisch identisch, nur die Eingabe ist freier.']],
     ['@type' => 'Question', 'name' => 'Wie viele Blöcke und Einzelnoten kann ich anlegen?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Beliebig viele Blöcke (etwa Klassenarbeiten, Tests, Mitarbeit, Referate), jeweils mit bis zu fünf Einzelnoten. Blöcke lassen sich frei benennen und einzeln hinzufügen oder entfernen.']],
-    ['@type' => 'Question', 'name' => 'Wie wird die Gesamtnote gerundet?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Das Ergebnis erscheint zweifach: einmal mit zwei Nachkommastellen für die interne Belegakte und einmal gerundet auf den gewünschten Notenschritt für das Zeugnis.']],
+    ['@type' => 'Question', 'name' => 'Wie wird die Gesamtnote gerundet?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Das Ergebnis erscheint zweifach: einmal genau mit zwei Nachkommastellen für die eigene Belegakte und einmal kaufmännisch auf eine Nachkommastelle gerundet für das Zeugnis.']],
     ['@type' => 'Question', 'name' => 'Was passiert mit leeren Blöcken?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Blöcke ohne Einzelnoten oder ohne Gewicht werden bei der Berechnung übersprungen. Wenn dadurch keine verwertbaren Blöcke übrig bleiben, weist das Tool darauf hin.']],
-    ['@type' => 'Question', 'name' => 'Kann ich den gespeicherten Notenschlüssel übernehmen?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Ja. Einzelnoten dürfen wahlweise direkt als Note oder als Punkte über den unter „Notenschlüssel" gespeicherten Schlüssel eingegeben werden.']],
+    ['@type' => 'Question', 'name' => 'Kann ich den gespeicherten Notenschlüssel übernehmen?', 'acceptedAnswer' => ['@type' => 'Answer', 'text' => 'Nein — Blocknoten rechnet direkt mit Noten. Liegen Ergebnisse als Punkte vor, rechnest du sie vorher mit „Punkte → Note" um; dort steht der gespeicherte Notenschlüssel zur Verfügung.']],
   ]],
 ];
 include '_inc/head.php';
@@ -94,13 +94,13 @@ include '_inc/head.php';
         </p>
         <p>
           Jeder Block bekommt einen Namen, ein Gewicht und bis zu fünf
-          Einzelnoten — wahlweise direkt als Note oder als Punkte über den
-          gespeicherten <a href="notenschluessel">Notenschlüssel</a>. Das
+          Einzelnoten. Liegen Ergebnisse als Punkte vor, rechnest du sie
+          vorher mit <a href="punkte-note">Punkte → Note</a> um. Das
           Werkzeug liefert pro Block den <strong>ungewichteten</strong>
           Mittelwert und den <strong>gewichteten</strong> Anteil — und am
-          Ende die Gesamtnote in zwei Varianten: zwei Nachkommastellen für
-          die Belegakte und gerundet auf den gewünschten Notenschritt für
-          das Zeugnis.
+          Ende die Gesamtnote in zwei Varianten: genau mit zwei
+          Nachkommastellen für die Belegakte und kaufmännisch auf eine
+          Nachkommastelle gerundet für das Zeugnis.
         </p>
       </article>
       <article aria-labelledby="bn_info_b_h">
@@ -148,9 +148,9 @@ include '_inc/head.php';
     <details class="faq-item">
       <summary>Wie wird die Gesamtnote gerundet?</summary>
       <div class="faq-answer">
-        <p>Das Ergebnis erscheint zweifach: einmal mit zwei
-        Nachkommastellen für die interne Belegakte und einmal gerundet auf
-        den gewünschten Notenschritt für das Zeugnis.</p>
+        <p>Das Ergebnis erscheint zweifach: einmal genau mit zwei
+        Nachkommastellen für die eigene Belegakte und einmal kaufmännisch
+        auf eine Nachkommastelle gerundet für das Zeugnis.</p>
       </div>
     </details>
 
@@ -166,9 +166,10 @@ include '_inc/head.php';
     <details class="faq-item">
       <summary>Kann ich den gespeicherten Notenschlüssel übernehmen?</summary>
       <div class="faq-answer">
-        <p>Ja. Einzelnoten dürfen wahlweise direkt als Note oder als Punkte
-        über den unter <a href="notenschluessel">Notenschlüssel</a>
-        gespeicherten Schlüssel eingegeben werden.</p>
+        <p>Nein — Blocknoten rechnet direkt mit Noten. Liegen Ergebnisse
+        als Punkte vor, rechnest du sie vorher mit
+        <a href="punkte-note">Punkte → Note</a> um; dort steht der
+        gespeicherte Notenschlüssel zur Verfügung.</p>
       </div>
     </details>
   </section>
