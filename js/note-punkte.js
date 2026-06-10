@@ -137,7 +137,8 @@
     if (!lastResult) return;
     const r = lastResult;
     E.exportPDF("note-punkte", (w) => {
-      w.line("Note → Punkte", 16, true);
+      // Kein "→" — jsPDF-Helvetica kann kein U+2192 (pdfSafe würde "->" draus machen).
+      w.line("Note zu Punkte", 16, true);
       w.line("Ziel-Note: " + C.fmtGrade(r.target, r.stepG), 11);
       w.line("Skala: " + C.fmtGrade(r.bestG, 0.1) + " (best) bis " + C.fmtGrade(r.worstG, 0.1) + " (schlecht)", 11);
       w.line("Max. Punkte: " + C.fmtPts(r.maxGrid, r.halfPts), 11);

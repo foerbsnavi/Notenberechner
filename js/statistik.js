@@ -228,7 +228,9 @@
       ["Schlechteste Note (im Datensatz)", fmtStat(worstInData)],
       ["Spannweite", C.fmt(stats.range, 0.1)],
       ["Standardabweichung", C.fmt(stats.stdev, 0.1)],
-      ["Bestanden (" + (higherIsBetter ? "≥ " : "≤ ") + C.fmt(passThr, 0.1) + ")", passed + " von " + grades.length + " (" + (passRate * 100).toFixed(1).replace(".", ",") + " %)"]
+      // "ab"/"bis" statt "≥"/"≤": liest sich natürlicher, passt zum Feld-Label
+      // "Bestanden bis Note" und ist im PDF darstellbar (≤/≥ sind kein WinAnsi).
+      ["Bestanden (" + (higherIsBetter ? "ab " : "bis ") + C.fmt(passThr, 0.1) + ")", passed + " von " + grades.length + " (" + (passRate * 100).toFixed(1).replace(".", ",") + " %)"]
     ];
     if (mode === "points" && stP) {
       rowsSummary.splice(2, 0,
@@ -296,7 +298,7 @@
     const r = lastResult;
     E.exportPDF("klausur-statistik", (w) => {
       w.line("Klausur-Statistik", 16, true);
-      w.line("Modus: " + (r.mode === "points" ? "Punkte → Note" : "Noten"), 11);
+      w.line("Modus: " + (r.mode === "points" ? "Punkte zu Note" : "Noten"), 11);
       w.line("Skala: " + C.fmtGrade(r.bestG, 0.1) + "–" + C.fmtGrade(r.worstG, 0.1) +
              " · Schritt " + C.fmtGrade(r.stepG, 0.1), 11);
       w.blank(8);

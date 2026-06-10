@@ -34,6 +34,15 @@
                  makeFilename(filenamePrefix, "csv"));
   }
 
+  // ── PDF: Zeichen-Absicherung ────────────────────────────────
+  // jsPDFs eingebaute Helvetica kann nur WinAnsi-Zeichen. Symbole wie
+  // "→" oder "≤" werden sonst als Zeichensalat gedruckt ("!'", '"d').
+  // Vor jeder Textausgabe durch lesbare Entsprechungen ersetzen.
+  const PDF_CHAR_MAP = { "→": "->", "←": "<-", "⇒": "=>", "≤": "<=", "≥": ">=", "−": "-", " ": " " };
+  function pdfSafe(text) {
+    return String(text == null ? "" : text).replace(/[→←⇒≤≥− ]/g, (ch) => PDF_CHAR_MAP[ch]);
+  }
+
   // ── PDF: einfacher Stream-Schreiber ─────────────────────────
   function makePdfWriter(jsPDFCtor, opts) {
     const pdf = new jsPDFCtor({ unit: "pt", format: "a4" });
@@ -53,7 +62,7 @@
       size = size || 11;
       pdf.setFont("helvetica", bold ? "bold" : "normal");
       pdf.setFontSize(size);
-      const arr = pdf.splitTextToSize(String(text == null ? "" : text), pageW - 2 * margin);
+      const arr = pdf.splitTextToSize(pdfSafe(text), pageW - 2 * margin);
       for (const t of arr) {
         ensure(1, size + 5);
         pdf.text(t, margin, y);
@@ -73,7 +82,7 @@
     // Kürzt Text mit "…" so, dass er in maxWidth (pt) passt, mit etwas Abstand.
     function clipCell(text, maxWidth) {
       const safeMax = Math.max(0, maxWidth - 6); // 6pt Sicherheitsabstand
-      let s = String(text == null ? "" : text);
+      let s = pdfSafe(text);
       if (pdf.getTextWidth(s) <= safeMax) return s;
       while (s.length > 1 && pdf.getTextWidth(s + "…") > safeMax) {
         s = s.slice(0, -1);
